@@ -1,3 +1,13 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+@font-face {
+    font-family: 'Nectarine';
+    src: local('Nectarine'),
+         url('../fonts/nectarine/otf/nectarine-nectarine-regular-400.otf') format('opentype'),
+         url('../fonts/nectarine/ttf/nectarine-nectarine-regular-400.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}

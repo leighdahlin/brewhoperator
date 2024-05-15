@@ -1855,13 +1855,13 @@ var plugins = [{
     "start_url": "/",
     "background_color": "#663399",
     "display": "minimal-ui",
-    "icon": "src/images/gatsby-icon.png",
+    "icon": "src/images/favicon.png",
     "legacy": true,
     "theme_color_in_head": true,
     "cache_busting_mode": "query",
     "crossOrigin": "anonymous",
     "include_favicon": true,
-    "cacheDigest": "4a9773549091c227cd2eb82ccd9c5e3a"
+    "cacheDigest": "74eb4d2d6ac9599479e892d73bf59269"
   }
 }, {
   name: 'default-site-plugin',

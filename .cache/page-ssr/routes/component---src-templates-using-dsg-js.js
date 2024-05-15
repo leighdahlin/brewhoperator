@@ -11,15 +11,45 @@ exports.modules = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (/* binding */ Header)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var gatsby__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! gatsby */ "./.cache/gatsby-browser-entry.js");
 
-// import { Link } from "gatsby"
 
-const Header = () => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("header", null);
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Header);
+// import useIsMobile from './hooks/useIsMobile';
+
+function Header() {
+  // const isMobile = useIsMobile(768);
+  const {
+    0: navOpen,
+    1: setNavOpen
+  } = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const links = [{
+    displayName: 'FIND BREWS',
+    link: '/findbrews/'
+  }];
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("header", {
+    className: "absolute top-0 z-40 shadow-lg flex justify-center"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "flex flex-row justify-between w-full max-w-[85.75rem] items-center relative h-[4.75rem] mx-auto px-[0.875rem] md:px-[1.5625rem]"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(gatsby__WEBPACK_IMPORTED_MODULE_1__.Link, {
+    href: "/"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("nav", {
+    className: "flex flex-row items-center"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", {
+    className: "hidden sm:flex justify-center items-center list-none gap-[35px] m-0"
+  }, links.map(l => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", {
+    key: l.displayName,
+    className: "group relative m-0"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(gatsby__WEBPACK_IMPORTED_MODULE_1__.Link, {
+    href: l.link,
+    className: "uppercase font-semibold no-underline text-[#F5F3EF] m-0"
+  }, l.displayName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "h-[.25rem] transition-[width] duration-250 ease-in-out w-0 bg-golden absolute block right-auto bottom-[-.3125rem] top-[auto] group-hover:w-[1.5rem] group-hover:right-[auto]"
+  })))))));
+}
 
 /***/ }),
 
