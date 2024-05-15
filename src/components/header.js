@@ -13,6 +13,22 @@ export default function Header() {
         displayName: 'FIND BREWS',
         link: '/findbrews/',
       },
+      {
+        displayName: 'BEER GUIDE',
+        link: '/findbrews/',
+      },
+      {
+        displayName: 'BREWS & VIEWS BLOG',
+        link: '/findbrews/',
+      },
+      // {
+      //   displayName: 'BREW AI',
+      //   link: '/login/',
+      // },
+      // {
+      //   displayName: 'LOGIN',
+      //   link: '/login/',
+      // },
   ];
 
 return (
@@ -33,15 +49,16 @@ return (
         {/* (!isMobile ? ( */}
           <ul className="hidden sm:flex justify-center items-center list-none gap-[35px] m-0">
             {links.map((l) => (
-              <li key={l.displayName} className="group relative m-0">
-                <Link
-                  href={l.link}
-                  className="uppercase font-semibold no-underline text-[#F5F3EF] m-0"
-                >
-                  {l.displayName}
-                </Link>
-                <div className="h-[.25rem] transition-[width] duration-250 ease-in-out w-0 bg-golden absolute block right-auto bottom-[-.3125rem] top-[auto] group-hover:w-[1.5rem] group-hover:right-[auto]" />
-              </li>
+                <li key={l.displayName} className="group relative m-0">
+                  <StaticImage src="../images/nav-foam.png" alt="beer foam" height={32} width={60} placeholder="none" className="z-[-1] absolute top-[-15px] left-[-22px] hidden group-hover:flex"/>
+                  <Link
+                    href={l.link}
+                    className="uppercase font-semibold no-underline text-[#F5F3EF] m-0"
+                  >
+                    {l.displayName}
+                  </Link>
+                  <div className="h-[.25rem] transition-[width] duration-250 ease-in-out w-0 bg-golden absolute block right-auto bottom-[-.3125rem] top-[auto] group-hover:w-[1.5rem] group-hover:right-[auto]" />
+                </li>
             ))}
           </ul>
         {/* ) : (

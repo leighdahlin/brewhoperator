@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import homepageVideo from "./videos/brewhoperator-homepage.hevc.mp4";
+import { StaticImage } from "gatsby-plugin-image";
 
 export default function HeroVideo(){
     const [searchQuery, setSearchQuery] = useState<string>('');
@@ -14,10 +15,22 @@ export default function HeroVideo(){
                 <div
                     className="relative flex flex-col items-center justify-center w-full h-full left-0 mx-auto p-[1.25rem] text-center top-0 z-10"
                     >
-                    <div className="h-full flex flex-col items-center justify-center gap-[1rem]">
-                        <h1 className="text-white text-5xl mb-0">Start Your Search</h1>
-                        <p className="max-w-[350px] text-white text-xl">A world of breweries awaits.</p>
-                        <input type="text" value={searchQuery} onChange={handleSearchInputChange} placeholder="City, State, or Zip" className="px-[10px] py-[5px] rounded-md focus:outline-none border-b-[1px] bg-softOpal text-navySmoke dark:text-softOpal dark:bg-navySmoke border-navySmoke dark:border-softOpal placeholder:text-black dark:placeholder:text-softOpal font-medium" />
+                    <div className="h-full flex flex-col items-center justify-center gap-[0.25rem]">
+                        <h1 className="text-white text-5xl mb-0 uppercase font-nectarine">Discover Brews Near You</h1>
+                        <p className="max-w-[450px] text-white text-xl font-medium tracking-[0.25rem] uppercase font-sans mb-[1.5rem]">Find Your Next Favorite Spot</p>
+                        <div className="flex gap-[0.5rem]">
+                            <input type="text" value={searchQuery} onChange={handleSearchInputChange} placeholder="City, State, or Zip" className="px-[10px] py-[5px] rounded-md focus:outline-none border-b-[1px] bg-softOpal text-navySmoke dark:text-softOpal dark:bg-navySmoke border-navySmoke dark:border-softOpal placeholder:font-sans  font-medium font-sans" />
+                            <button>
+                            <StaticImage
+                                src="./images/cheers-button.png"
+                                alt="Brew Hoperator logo"
+                                height={68}
+                                width={100}
+                                placeholder="blurred"
+                                className="w-[50px]"
+                            />
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <video
