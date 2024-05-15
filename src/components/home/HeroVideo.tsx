@@ -27,7 +27,7 @@ export default function HeroVideo(){
                                 height={68}
                                 width={100}
                                 placeholder="blurred"
-                                className="w-[55px] group-hover:hidden"
+                                className="w-[55px] group-hover:w-0"
                             />
                             <StaticImage
                                 src="./images/cheers-btn.png"
@@ -35,7 +35,7 @@ export default function HeroVideo(){
                                 height={68}
                                 width={100}
                                 placeholder="blurred"
-                                className="w-[55px] hidden group-hover:block"
+                                className="w-0 group-hover:w-[55px]"
                             />
                             </button>
                         </div>
