@@ -20,14 +20,22 @@ export default function HeroVideo(){
                         <p className="max-w-[450px] text-white text-xl font-medium tracking-[0.25rem] uppercase font-sans mb-[1.5rem]">Find Your Next Favorite Spot</p>
                         <div className="flex gap-[0.5rem]">
                             <input type="text" value={searchQuery} onChange={handleSearchInputChange} placeholder="City, State, or Zip" className="px-[10px] py-[5px] rounded-md focus:outline-none border-b-[1px] bg-softOpal text-navySmoke dark:text-softOpal dark:bg-navySmoke border-navySmoke dark:border-softOpal placeholder:font-sans  font-medium font-sans" />
-                            <button>
+                            <button className="group">
                             <StaticImage
-                                src="./images/cheers-button.png"
+                                src="./images/empty-cheers-btn.png"
                                 alt="Brew Hoperator logo"
                                 height={68}
                                 width={100}
                                 placeholder="blurred"
-                                className="w-[50px]"
+                                className="w-[55px] group-hover:hidden"
+                            />
+                            <StaticImage
+                                src="./images/cheers-btn.png"
+                                alt="Brew Hoperator logo"
+                                height={68}
+                                width={100}
+                                placeholder="blurred"
+                                className="w-[55px] hidden group-hover:block"
                             />
                             </button>
                         </div>
