@@ -20,12 +20,11 @@ return (
   <div className="flex flex-row justify-between w-full max-w-[85.75rem] items-center relative h-[4.75rem] mx-auto px-[0.875rem] md:px-[1.5625rem] m-5">
     <Link href="/">
       <StaticImage
-        src="../images/13.png"
+        src="../images/bh-logo-6.png"
         alt="Brew Hoperator logo"
-        height={80}
-        width={80}
+        height={60}
+        width={160}
         placeholder="blurred"
-        layout="fixed"
         className=""
       />
     </Link>

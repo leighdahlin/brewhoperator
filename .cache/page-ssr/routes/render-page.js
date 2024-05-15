@@ -1855,13 +1855,13 @@ var plugins = [{
     "start_url": "/",
     "background_color": "#663399",
     "display": "minimal-ui",
-    "icon": "src/images/favicon.png",
+    "icon": "src/images/hopglass.png",
     "legacy": true,
     "theme_color_in_head": true,
     "cache_busting_mode": "query",
     "crossOrigin": "anonymous",
     "include_favicon": true,
-    "cacheDigest": "74eb4d2d6ac9599479e892d73bf59269"
+    "cacheDigest": "e288566e334e9ef9936883911ef2f0d0"
   }
 }, {
   name: 'default-site-plugin',
