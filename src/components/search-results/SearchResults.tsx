@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "@reach/router";
+import { useLocation, navigate } from "@reach/router";
 import queryString from "query-string";
 import BreweryCard from "./BreweryCard";
+import BreweryMap from "./BreweryMap";
 
 interface Brewery {
     id: string;
@@ -14,8 +15,8 @@ interface Brewery {
     state_province: string;
     postal_code: string;
     country: string;
-    longitude: string;
-    latitude: string;
+    longitude: string | null;
+    latitude: string | null;
     phone: string;
     website_url: string;
     state: string;
@@ -28,21 +29,53 @@ const SearchResults = () => {
     const [breweries, setBreweries] = useState<Brewery[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [searchQuery, setSearchQuery] = useState<string>(query as string || '');
 
     useEffect(() => {
         if (query) {
-            fetch(`https://api.openbrewerydb.org/v1/breweries?by_city=${query}`)
-                .then(response => response.json())
-                .then(data => {
-                    setBreweries(data);
-                    setLoading(false);
-                })
-                .catch(error => {
-                    setError('Failed to fetch data');
-                    setLoading(false);
-                });
+            fetchBreweries(query as string);
+        } else {
+            setLoading(false);
         }
     }, [query]);
+
+    const fetchBreweries = (searchQuery: string) => {
+        setLoading(true);
+        let apiUrl = '';
+
+        // Determine if the search query is a city, state, or zip code
+        if (/^\d{5}(-\d{4})?$/.test(searchQuery)) {
+            // Zip code
+            apiUrl = `https://api.openbrewerydb.org/v1/breweries?by_postal=${searchQuery}`;
+        } else if (/^[a-zA-Z\s]+,?\s*[a-zA-Z]{2}$/.test(searchQuery)) {
+            // State
+            apiUrl = `https://api.openbrewerydb.org/v1/breweries?by_state=${searchQuery.replace(/,/g, '').split(' ').join('_')}`;
+        } else {
+            // City
+            apiUrl = `https://api.openbrewerydb.org/v1/breweries?by_city=${searchQuery}`;
+        }
+        fetch(apiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+                return response.json();
+            })
+            .then(data => {
+                setBreweries(data);
+                setLoading(false);
+            })
+            .catch(error => {
+                setError(error.message);
+                setLoading(false);
+            });
+    };
+
+    const handleSearch = () => {
+        if (searchQuery.trim()) {
+            navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
+        }
+    };
 
     if (loading) {
         return <p>Loading...</p>;
@@ -54,16 +87,39 @@ const SearchResults = () => {
 
     return (
         <div className="p-6">
-            <h1 className="text-3xl font-bold text-[#734E39] mb-6">Breweries in {query}</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {breweries.map(brewery => (
-                    <BreweryCard key={brewery.id} {...brewery} />
-                ))}
+            <div className="mb-6">
+                <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search by city"
+                    className="px-4 py-2 border border-gray-300 rounded"
+                />
+                <button
+                    onClick={handleSearch}
+                    className="ml-2 px-4 py-2 bg-[#EFBE4F] text-soft-white rounded"
+                >
+                    Search
+                </button>
             </div>
+
+            {breweries.length > 0 ? (
+                <>
+                    <h1 className="text-3xl font-bold text-[#734E39] mb-6">Breweries in {query}</h1>
+                    <BreweryMap breweries={breweries} />
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                        {breweries.map(brewery => (
+                            <BreweryCard key={brewery.id} {...brewery} />
+                        ))}
+                    </div>
+                </>
+            ) : (
+                <p>No breweries found for "{query}".</p>
+            )}
         </div>
     );
 };
 
 export default SearchResults;
 
-       
+   
