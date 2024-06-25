@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useLocation, navigate } from "@reach/router";
 import queryString from "query-string";
 import BreweryCard from "./BreweryCard";
-import BreweryMap from "./BreweryMap";
+import loadable from '@loadable/component';
+import US_STATES from "./const"
 
 interface Brewery {
     id: string;
@@ -22,6 +23,8 @@ interface Brewery {
     state: string;
     street: string;
 }
+
+const LoadableBreweryMap = loadable(() => import('./BreweryMap'));
 
 const SearchResults = () => {
     const location = useLocation();
@@ -43,17 +46,18 @@ const SearchResults = () => {
         setLoading(true);
         let apiUrl = '';
 
-        // Determine if the search query is a city, state, or zip code
+            // Determine if the search query is a state, city, or zip code
         if (/^\d{5}(-\d{4})?$/.test(searchQuery)) {
             // Zip code
             apiUrl = `https://api.openbrewerydb.org/v1/breweries?by_postal=${searchQuery}`;
-        } else if (/^[a-zA-Z\s]+,?\s*[a-zA-Z]{2}$/.test(searchQuery)) {
+        } else if (US_STATES.map((state: string) => state.toLowerCase()).includes(searchQuery)) {
             // State
-            apiUrl = `https://api.openbrewerydb.org/v1/breweries?by_state=${searchQuery.replace(/,/g, '').split(' ').join('_')}`;
+            apiUrl = `https://api.openbrewerydb.org/v1/breweries?by_state=${searchQuery.replace(/ /g, '_')}`;
         } else {
             // City
             apiUrl = `https://api.openbrewerydb.org/v1/breweries?by_city=${searchQuery}`;
         }
+        
         fetch(apiUrl)
             .then(response => {
                 if (!response.ok) {
@@ -72,8 +76,10 @@ const SearchResults = () => {
     };
 
     const handleSearch = () => {
-        if (searchQuery.trim()) {
-            navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
+        const trimmedQuery = searchQuery.trim().toLowerCase();
+
+        if (trimmedQuery) {
+            navigate(`/search?query=${encodeURIComponent(trimmedQuery)}`);
         }
     };
 
@@ -104,15 +110,15 @@ const SearchResults = () => {
             </div>
 
             {breweries.length > 0 ? (
-                <>
-                    <h1 className="text-3xl font-bold text-[#734E39] mb-6">Breweries in {query}</h1>
-                    <BreweryMap breweries={breweries} />
+                <div className="">
+                    {/* <h1 className="text-3xl font-bold text-[#734E39] mb-6">Breweries in {query}</h1> */}
+                    <LoadableBreweryMap breweries={breweries} />
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                         {breweries.map(brewery => (
                             <BreweryCard key={brewery.id} {...brewery} />
                         ))}
                     </div>
-                </>
+                </div>
             ) : (
                 <p>No breweries found for "{query}".</p>
             )}
@@ -121,5 +127,6 @@ const SearchResults = () => {
 };
 
 export default SearchResults;
+
 
    

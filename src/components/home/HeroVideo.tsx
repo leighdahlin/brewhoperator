@@ -12,7 +12,7 @@ export default function HeroVideo() {
     };
 
     const handleSearch = () => {
-        const trimmedQuery = searchQuery.trim();
+        const trimmedQuery = searchQuery.trim().toLowerCase();
 
         // Regex to validate city, state, or zip code
         const cityStateZipRegex = /^([a-zA-Z\s,]+|\d{5}(?:-\d{4})?)$/;
