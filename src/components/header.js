@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useMemo } from "react"
 import { Link } from "gatsby"
 import { useLocation } from "@reach/router";
 import useIsMobile from './hooks/useIsMobile';
@@ -22,11 +22,11 @@ export default function Header() {
 
   useEffect(() => {
     clearSearch();
-    console.log('clear search')
   }, [clearSearch]);
 
-  const isHomePage = pathname === "/";
-
+  const isHomePage = useMemo(()=>{
+    return pathname === "/";
+  },[pathname])
   const links = [
     {
       section: 'Create Hop',

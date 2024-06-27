@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useStaticQuery, graphql } from 'gatsby';
 import { GatsbyImage, IGatsbyImageData } from 'gatsby-plugin-image';
 import useIsMobile from './hooks/useIsMobile';
@@ -24,7 +24,9 @@ interface ImageQueryResult {
 
 const Logo: React.FC = () => {
   const pathname = useLocationStore((state) => state.pathname);
-  const isHomePage = pathname === "/";
+  const isHomePage = useMemo(()=>{
+    return pathname === "/";
+  },[pathname])
 
   const data: ImageQueryResult = useStaticQuery(graphql`
     query {
@@ -47,6 +49,11 @@ const Logo: React.FC = () => {
   `);
 
   const isMobile = useIsMobile(640);
+
+   // Do not render the logo until the pathname is set
+  if (!pathname) {
+    return null;
+  }
 
   const imageData = isMobile ? data.logoIcon.childImageSharp.gatsbyImageData : isHomePage ? data.logoHp.childImageSharp.gatsbyImageData : data.logoAll.childImageSharp.gatsbyImageData;
 
