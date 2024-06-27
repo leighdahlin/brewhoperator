@@ -76,11 +76,11 @@ export default function Header() {
   <header className={`${isHomePage ? "absolute" : "relative border-b-2 border-gray"} top-0 z-[1000] flex justify-center w-full`}>
       <div className={`flex flex-row ${isHomePage ? "justify-center sm:justify-between":"justify-between"} w-full items-center mx-auto pl-[0.5rem] pr-[1rem] sm:px-[1.5625rem] my-5`}>
         <Link to="/" className="pr-[1rem]">
-          <Logo isHomePage={isHomePage}/>
+          <Logo />
         </Link>
         {!isHomePage && <BrewerySearchForm/>}
-        <nav className="fixed bottom-0 left-0 w-full bg-white sm:relative sm:w-auto sm:bg-transparent sm:border-none z-[500]">
-        <button type="button" onClick={() => {setNavOpen(!navOpen) }} className={`hidden sm:flex relative h-[40px] w-[40px] rounded-full border border-border bg-white items-center justify-center hover:shadow-nav ${navOpen? "shadow-nav":""}`} aria-label="Open/Close Menu">
+        <nav className={`fixed bottom-0 left-0 w-full ${isHomePage? "sm:bg-transparent bg-white":"bg-white"} sm:relative sm:w-auto sm:bg-transparent sm:border-none z-[500]`}>
+        <button type="button" onClick={() => {setNavOpen(!navOpen) }} className={`hidden sm:flex relative h-[40px] w-[40px] rounded-full border border-border ${isHomePage? "bg-transparent hover:bg-white":"bg-white"} items-center justify-center hover:shadow-nav ${navOpen? "shadow-nav":""}`} aria-label="Open/Close Menu">
             <div className={`h-[2px] w-full bg-dark-golden absolute left-[50%] top-[50%] transition-all duration-250 ease-in transform translate-x-[-50%] translate-y-[-50%]`} style={{ maxWidth: '20px', marginTop: '-5px' }} />
             <div className={`h-[2px] w-full bg-dark-golden absolute left-[50%] top-[50%] transition-all duration-250 ease-in transform translate-x-[-50%] translate-y-[-50%]`} style={{ maxWidth: '20px' }} />
             <div className={`h-[2px] w-full bg-dark-golden absolute left-[50%] top-[50%] transition-all duration-250 ease-in transform translate-x-[-50%] translate-y-[-50%]`} style={{ maxWidth: '20px', marginTop: '5px' }} />

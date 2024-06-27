@@ -2,10 +2,7 @@ import React from 'react';
 import { useStaticQuery, graphql } from 'gatsby';
 import { GatsbyImage, IGatsbyImageData } from 'gatsby-plugin-image';
 import useIsMobile from './hooks/useIsMobile';
-
-interface LogoProps {
-  isHomePage: boolean;
-}
+import useLocationStore from "../stores/common/useLocationStore";
 
 interface ImageQueryResult {
   logoHp: {
@@ -25,7 +22,10 @@ interface ImageQueryResult {
   };
 }
 
-const Logo: React.FC<LogoProps> = ({ isHomePage }) => {
+const Logo: React.FC = () => {
+  const pathname = useLocationStore((state) => state.pathname);
+  const isHomePage = pathname === "/";
+
   const data: ImageQueryResult = useStaticQuery(graphql`
     query {
       logoHp: file(relativePath: { eq: "bh-logo-hp.png" }) {

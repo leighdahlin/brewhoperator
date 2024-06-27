@@ -20,6 +20,7 @@ module.exports = {
       "dark-golden": "#DEB407",
       error: "#FF0000",
       foggyGrey: "#6A6A6A",
+      transparent: 'transparent',
     },
     boxShadow: {
       nav: "0 2px 4px rgba(0,0,0,0.18)",
