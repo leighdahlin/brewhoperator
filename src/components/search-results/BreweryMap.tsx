@@ -56,7 +56,7 @@ const BreweryMap: React.FC<BreweryMapProps> = ({ breweries }) => {
         <MapContainer
             center={defaultPosition}
             zoom={4}
-            style={{ height: "400px", width: "100%" }}
+            style={{ height: "100%", width: "100%" }}
         >
             <MapEvents validBreweries={validBreweries} />
             <TileLayer

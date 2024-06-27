@@ -1,0 +1,59 @@
+import React from 'react';
+import { useStaticQuery, graphql } from 'gatsby';
+import { GatsbyImage, IGatsbyImageData } from 'gatsby-plugin-image';
+import useIsMobile from './hooks/useIsMobile';
+
+interface LogoProps {
+  isHomePage: boolean;
+}
+
+interface ImageQueryResult {
+  logoHp: {
+    childImageSharp: {
+      gatsbyImageData: IGatsbyImageData;
+    };
+  };
+  logoAll: {
+    childImageSharp: {
+      gatsbyImageData: IGatsbyImageData;
+    };
+  };
+  logoIcon: {
+    childImageSharp: {
+      gatsbyImageData: IGatsbyImageData;
+    };
+  };
+}
+
+const Logo: React.FC<LogoProps> = ({ isHomePage }) => {
+  const data: ImageQueryResult = useStaticQuery(graphql`
+    query {
+      logoHp: file(relativePath: { eq: "bh-logo-hp.png" }) {
+        childImageSharp {
+          gatsbyImageData(height: 50, width: 125, placeholder: NONE)
+        }
+      }
+      logoAll: file(relativePath: { eq: "bh-logo-all.png" }) {
+        childImageSharp {
+          gatsbyImageData(height: 50, width: 125, placeholder: NONE)
+        }
+      }
+      logoIcon: file(relativePath: { eq: "bh-icon.png" }) {
+        childImageSharp {
+          gatsbyImageData(height: 50, width: 50, placeholder: NONE)
+        }
+      }
+    }
+  `);
+
+  const isMobile = useIsMobile(640);
+
+  const imageData = isMobile ? data.logoIcon.childImageSharp.gatsbyImageData : isHomePage ? data.logoHp.childImageSharp.gatsbyImageData : data.logoAll.childImageSharp.gatsbyImageData;
+
+  return (
+    <GatsbyImage image={imageData} alt="Brew Hoperator logo" />
+  );
+};
+
+export default Logo;
+

@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useLocation, navigate } from "@reach/router";
 import queryString from "query-string";
 import BreweryCard from "./BreweryCard";
 import loadable from '@loadable/component';
 import US_STATES from "./const"
+import useSearchStore from "../../stores/search/useSearchStore";
 
 interface Brewery {
     id: string;
@@ -32,10 +33,11 @@ const SearchResults = () => {
     const [breweries, setBreweries] = useState<Brewery[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const [searchQuery, setSearchQuery] = useState<string>(query as string || '');
+    const setSearch = useSearchStore((state) => state.setSearchQuery);
 
     useEffect(() => {
         if (query) {
+            setSearch(query as string)
             fetchBreweries(query as string);
         } else {
             setLoading(false);
@@ -55,7 +57,7 @@ const SearchResults = () => {
             apiUrl = `https://api.openbrewerydb.org/v1/breweries?by_state=${searchQuery.replace(/ /g, '_')}`;
         } else {
             // City
-            apiUrl = `https://api.openbrewerydb.org/v1/breweries?by_city=${searchQuery}`;
+            apiUrl = `https://api.openbrewerydb.org/v1/breweries?by_city=${searchQuery.replace(/ /g, '_')}`;
         }
         
         fetch(apiUrl)
@@ -66,6 +68,7 @@ const SearchResults = () => {
                 return response.json();
             })
             .then(data => {
+                console.log(data)
                 setBreweries(data);
                 setLoading(false);
             })
@@ -75,52 +78,69 @@ const SearchResults = () => {
             });
     };
 
-    const handleSearch = () => {
-        const trimmedQuery = searchQuery.trim().toLowerCase();
+    const toTitleCase = (str: string) => {
+        return str.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    };    
 
-        if (trimmedQuery) {
-            navigate(`/search?query=${encodeURIComponent(trimmedQuery)}`);
+    const getDisplayLocation = useMemo(() => {
+        if(query){
+            if (/^\d{5}(-\d{4})?$/.test(query as string)) {
+                // Zip code
+                return `# ${query}`;
+            } else if (US_STATES.map((state: string) => state.toLowerCase()).includes((query as string).toLowerCase())) {
+                // State
+                return toTitleCase(query as string);
+            } else if (breweries.length > 0) {
+                // City, return city and state
+                const city = breweries[0].city;
+                const state = toTitleCase(breweries[0].state_province);
+                return `${city}, ${state}`;
+            }
+            return query;
         }
-    };
+        return "";
+    }, [query, breweries]);
+    
 
     if (loading) {
-        return <p>Loading...</p>;
+        return (
+            <div className="flex flex-col h-[calc(100vh-90px)] items-center justify-center">
+                <p>Loading...</p>
+            </div>
+        );
     }
 
     if (error) {
-        return <p>{error}</p>;
+        return (
+            <div className="flex flex-col h-[calc(100vh-90px)]">
+                <p>Error:{error}</p>
+            </div>
+        );
     }
 
     return (
-        <div className="p-6">
-            <div className="mb-6">
-                <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search by city"
-                    className="px-4 py-2 border border-gray-300 rounded"
-                />
-                <button
-                    onClick={handleSearch}
-                    className="ml-2 px-4 py-2 bg-[#EFBE4F] text-soft-white rounded"
-                >
-                    Search
-                </button>
-            </div>
-
-            {breweries.length > 0 ? (
-                <div className="">
+        <div className="flex flex-col h-[calc(100vh-90px)]">
+            {!!breweries.length && (
+            <>
+                <div className="p-4 border-b-2 border-gray text-sm font-semibold">
+                    {breweries.length === 50 ? "Over 50":breweries.length} brewer{breweries.length > 1 ? "ies":"y"} found in {getDisplayLocation}
+                </div>
+            
+                <div className="h-full flex-1">
                     {/* <h1 className="text-3xl font-bold text-[#734E39] mb-6">Breweries in {query}</h1> */}
                     <LoadableBreweryMap breweries={breweries} />
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                    {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                         {breweries.map(brewery => (
                             <BreweryCard key={brewery.id} {...brewery} />
                         ))}
-                    </div>
+                    </div> */}
                 </div>
-            ) : (
-                <p>No breweries found for "{query}".</p>
+            </>
+            )}
+            {!!query && !breweries.length && (
+                <div className="flex items-center justify-center h-full w-full">
+                    <p>No breweries found for "{query}".</p>
+                </div>
             )}
         </div>
     );
